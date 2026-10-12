@@ -73,3 +73,13 @@ devuelve error. No ejecutar la semilla de nuevo sobre una base con datos.
 
 Antes de compartirlo como avance ejecutado, agregar commit local, versión
 del entorno, verificaciones observadas, defectos e integrante revisor real.
+
+## Evidencia local recibida el 12/10/2026
+
+El usuario confirmó commit `a6905809b1de967c33c1edc00ec5c625113d0a14`, rama
+sincronizada y árbol limpio. Sus salidas de consola confirman app/db healthy,
+PHP 8.4.26, MySQL 8.4.11, conexión ins_app, seis tablas, cantidades esperadas
+de semilla, promedios 2.00 h n=2 / 6.00 h n=2, hashes costo 12 y 17 archivos
+PHP con sintaxis válida. Son pruebas locales del usuario, no ejecuciones del
+asistente. No se recibió aquí confirmación independiente de la portada,
+revisión de otro integrante ni aceptación funcional de RF01–RF15.

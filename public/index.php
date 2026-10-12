@@ -11,8 +11,12 @@ header('Cache-Control: no-store');
 
 try {
     require dirname(__DIR__) . '/bootstrap/app.php';
+    InsTickets\Core\Session::start();
+    InsTickets\Core\Auth::refresh();
     $router = require dirname(__DIR__) . '/config/routes.php';
     $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+} catch (InsTickets\Core\HttpException $exception) {
+    InsTickets\Core\View::render('errors/error', ['title' => 'Solicitud no disponible', 'message' => $exception->getMessage()], $exception->status);
 } catch (Throwable $exception) {
     $reference = bin2hex(random_bytes(6));
     // Datos del incidente solo en almacenamiento privado, nunca en la respuesta.

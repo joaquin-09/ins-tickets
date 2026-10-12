@@ -15,7 +15,7 @@ try {
     $manifest = [ordered]@{
         recorded_at_utc = [DateTime]::UtcNow.ToString('o')
         baseline = '1.3'
-        increment = '01-base'
+        increment = '02-acceso-admin'
         php = Invoke-DockerText @('compose','exec','-T','app','php','-r','echo PHP_VERSION;')
         mysql = Invoke-DockerText @('compose','exec','-T','db','mysql','--version')
         composer = Invoke-DockerText @('compose','exec','-T','app','composer','--version')

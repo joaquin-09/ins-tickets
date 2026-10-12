@@ -44,5 +44,5 @@ a `public/`, desactivar índices y redirigir rutas no estáticas a `index.php`,
 siguiendo `docker/apache/000-default.conf`.
 
 En HTTP local las cookies no serán Secure; acceso remoto requiere HTTPS y
-configuración correspondiente en el módulo de sesiones. Login aún pendiente.
+configuración correspondiente en el módulo de sesiones. El acceso del incremento 2 usa /login.
 No probar restauraciones ni borrar registros sobre la base de exposición.

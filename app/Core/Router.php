@@ -13,6 +13,11 @@ final class Router
         $this->routes['GET'][$path] = $handler;
     }
 
+    public function post(string $path, callable $handler): void
+    {
+        $this->routes['POST'][$path] = $handler;
+    }
+
     public function dispatch(string $method, string $uri): void
     {
         $path = parse_url($uri, PHP_URL_PATH);
@@ -20,6 +25,9 @@ final class Router
         if ($handler === null) {
             View::render('errors/error', ['title' => 'Página no encontrada', 'message' => 'La página solicitada no está disponible.'], 404);
             return;
+        }
+        if ($method === 'POST') {
+            Csrf::verify();
         }
         $handler();
     }

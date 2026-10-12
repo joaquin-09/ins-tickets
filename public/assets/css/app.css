@@ -4,3 +4,35 @@ body { background: #f3f6fa; color: #172c42; }
 .skip-link { position: absolute; top: -100px; left: 1rem; padding: .75rem; background: white; z-index: 1000; }
 .skip-link:focus { top: 1rem; }
 :focus-visible { outline: 3px solid #b55a00; outline-offset: 3px; }
+.app-shell { min-height: 100vh; display: grid; grid-template-columns: 245px minmax(0,1fr); }
+.guest-shell { grid-template-columns: minmax(0,1fr); }
+.sidebar { background: var(--ins-navy); color: #fff; padding: 2rem 1.25rem; display: flex; flex-direction: column; }
+.brand { color: #fff; font-weight: 700; font-size: 1.45rem; text-decoration: none; margin-bottom: 2rem; }
+.brand span { display: block; font-size: .8rem; font-weight: 400; margin-top: .3rem; }
+.sidebar nav { display: grid; gap: .45rem; }
+.sidebar nav a { color: #fff; padding: .8rem 1rem; text-decoration: none; border-radius: .45rem; }
+.sidebar nav a:hover { background: #2a507a; }
+.sidebar-account { margin-top: auto; padding-top: 3rem; font-size: .9rem; }
+.sidebar-account strong, .sidebar-account span { display: block; }
+.workspace { min-width: 0; }
+.workspace-header { background: #fff; padding: 1.25rem 2rem; display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #d8e0e8; color: #526477; }
+.content { padding: 2rem; max-width: 1440px; margin: 0 auto; }
+.page-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.8rem; }
+.eyebrow { font-size: .75rem; letter-spacing: .12rem; font-weight: 700; color: #45627f; }
+h1 { font-size: clamp(1.7rem,3vw,2.15rem); font-weight: 700; }
+.login-card { max-width: 470px; margin-top: min(8vh,5rem); }
+.form-card { max-width: 760px; margin-top: 1.5rem; }
+.table th { background: #eaf0f6; color: #304b66; padding: 1rem; }
+.table td { padding: 1rem; }
+.actions { white-space: nowrap; }
+@media (max-width: 760px) {
+    .app-shell { grid-template-columns: minmax(0,1fr); }
+    .sidebar { padding: 1rem; }
+    .brand { margin-bottom: 1rem; }
+    .sidebar nav { display: flex; flex-wrap: wrap; gap: .25rem; }
+    .sidebar nav a { padding: .6rem; }
+    .sidebar-account { padding-top: 1rem; }
+    .sidebar-account form { max-width: 220px; }
+    .content, .workspace-header { padding: 1.25rem; }
+    .page-heading { align-items: flex-start; flex-direction: column; }
+}
