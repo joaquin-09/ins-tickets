@@ -65,7 +65,7 @@ final class TicketController
         $repo = new TicketRepository(Database::connection());
         $id = Input::id($_GET['id'] ?? null);
         $ticket = $repo->find($actor, $id) ?? throw new HttpException(404, 'No se encontró el ticket.');
-        View::render('tickets/detail', ['title' => 'Detalle de ticket', 'ticket' => $ticket, 'comments' => $repo->comments($id, Input::page($_GET['comentarios_pagina'] ?? 1)), 'history' => $repo->history($id, Input::page($_GET['historial_pagina'] ?? 1))]);
+        View::render('tickets/detail', ['title' => 'Detalle de ticket', 'ticket' => $ticket, 'comments' => $repo->comments($id, Input::page($_GET['comentarios_pagina'] ?? 1)), 'history' => $repo->history($id, Input::page($_GET['historial_pagina'] ?? 1)), 'agents' => $actor->role === 'administrador' ? $repo->users() : []]);
     }
 
     public function editForm(): void

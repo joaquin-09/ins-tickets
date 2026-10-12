@@ -7,6 +7,7 @@ use InsTickets\Controllers\AuthController;
 use InsTickets\Controllers\UserController;
 use InsTickets\Controllers\CategoryController;
 use InsTickets\Controllers\TicketController;
+use InsTickets\Controllers\AttentionController;
 use InsTickets\Core\Auth;
 use InsTickets\Core\Router;
 
@@ -39,5 +40,9 @@ $router->get('/tickets/crear', [$tickets, 'createForm']);
 $router->post('/tickets/crear', [$tickets, 'create']);
 $router->get('/tickets/editar', [$tickets, 'editForm']);
 $router->post('/tickets/editar', [$tickets, 'edit']);
+$attention = new AttentionController();
+$router->post('/tickets/asignar', [$attention, 'assign']);
+$router->post('/tickets/transicion', [$attention, 'transition']);
+$router->post('/tickets/comentar', [$attention, 'comment']);
 
 return $router;

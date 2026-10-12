@@ -12,4 +12,4 @@
         <a class="btn btn-outline-primary" href="/categorias">Gestionar categorías</a>
     <?php endif; ?>
 </div></section>
-<p class="mt-4 text-secondary">Incremento 3: las acciones de atención y los paneles/reportes se incorporarán en los siguientes módulos.</p>
+<p class="mt-4 text-secondary">Incremento 4: atención disponible desde el detalle del ticket. Paneles y reportes se incorporarán en el siguiente módulo.</p>

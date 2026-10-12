@@ -4,21 +4,20 @@ Sistema de soporte interno para la organización **ficticia** NexoTI Solutions.
 Proyecto académico INS104. Diseño definitivo: maestro 1.3, sección 14.
 Entrega prevista: miércoles 14 de octubre de 2026.
 
-## Estado: incremento 03-tickets
+## Estado: incremento 04-atencion
 
-Base del incremento 3: `2463f7bbe8837051cf4c96f6ad8a8e724733bf95`.
-Acceso/administración implementados en incremento 2; el usuario informa que
-sus pruebas pasaron, sin aportar salidas detalladas. Ahora se implementan
-RF03/RF04/RF05/RF15: creación propia, listas por rol, detalle, edición
-restringida, búsqueda/filtros, paginación de 20 y protección contra reenvío.
-Creación/edición y su evento son transaccionales; se controla versión y
-categoría activa/histórica. Ver `docs/INCREMENTO_03.md`.
+Base: `beba1299b5f49efec3f36a18746d34d20eee079a`, feature/tickets limpia y
+sincronizada. El usuario informó funcionamiento correcto del incremento 3;
+no se recibieron aquí salidas detalladas de pruebas ni de cada caso manual.
 
-Atención RF06–RF09 y paneles/reportes RF12–RF14 siguen pendientes. Consulta
-histórica de eventos/comentarios disponible; creación de comentarios y
-transiciones se incorporan en incremento 4. Aceptación final todavía pendiente.
+Implementados RF01–RF11 y RF15: acceso/administración, tickets y atención.
+El incremento 4 agrega RF06/RF07/RF08/RF09: asignación/reasignación, flujo
+abierto → en progreso → resuelto → cerrado, comentarios, historial, fechas,
+resolutor/cerrador, primera respuesta válida y operaciones atómicas con
+bloqueo/versionado. Se conservan esquema, secretos y datos existentes.
+RF12–RF14 (paneles/reportes) y aceptación final aún pendientes.
 
-El usuario verificó base 1: PHP 8.4.26/MySQL 8.4.11, healthy y semilla OK.
+Ver `docs/INCREMENTO_04.md` para reglas, pruebas por entorno y demo manual.
 Los commits siguen siendo responsabilidad del usuario.
 
 ## Tecnologías y estructura
@@ -83,11 +82,11 @@ ejecutadas. `check-demo.php` es de lectura y exige esa semilla sin cambios.
 
 ## Comprobaciones y próximos módulos
 
-Ver `docs/INCREMENTO_01.md`, `docs/INCREMENTO_02.md` y `docs/INCREMENTO_03.md` para resultados por entorno
+Ver `docs/INCREMENTO_01.md`, `docs/INCREMENTO_02.md` `docs/INCREMENTO_03.md` y `docs/INCREMENTO_04.md` para resultados por entorno
 y verificaciones locales pendientes. El chequeo de semilla intacta no debe
 repetirse después de usar login/administración: los datos ya pueden cambiar.
 Ver `docs/INSTALACION_MANUAL.md` para la misma aplicación sin Docker.
-Próximos: atención; paneles/reportes; validación
+Próximos: paneles/reportes; validación
 y entrega. No etiquetar `v1.0.0` hasta satisfacer aceptación de RF01–RF15.
 
 ## Seguridad e integridad de esta base
@@ -98,7 +97,7 @@ cabeceras defensivas, mensajes internos genéricos y cuenta MySQL `ins_app`
 con privilegios por tabla. Sin DELETE sobre tickets ni UPDATE/DELETE sobre
 comentarios o historial. PK, FK sin cascadas, unicidad, índices y CHECK en BD.
 Permisos por rol administrativo, CSRF, sesiones e intentos implementados en incremento 2;
-políticas de creación/edición y concurrencia implementadas en 3; atención transaccional pendiente en 4.
+políticas de creación/edición y concurrencia implementadas en 3; atención transaccional implementada en 4.
 
 Para futuras publicaciones remotas se requerirá HTTPS y cookies Secure; esta
 instalación local usa HTTP y no constituye despliegue público.
@@ -154,3 +153,29 @@ con 15 casos preparada para ejecución local, todavía no ejecutada aquí.
 `/tickets` global solo para administrador, y propia para los otros roles.
 Crear/editar desde menú y detalle. Fechas mostradas en America/El_Salvador.
 Las cuentas QA/datos creados por el equipo se conservan; no borrar tickets.
+
+## Aplicación del incremento 4 sobre instalación existente
+
+No cambia el esquema ni requiere semilla. Aplicar parche y ejecutar:
+
+```powershell
+docker compose exec -T app composer install --no-interaction --prefer-dist
+docker compose restart app
+docker compose exec -T app php scripts/lint.php
+docker compose exec -T app php vendor/bin/phpunit --log-junit storage/reports/unit-04.xml
+docker compose -f compose.yaml -f compose.test.yaml --profile test config --quiet
+docker compose -f compose.yaml -f compose.test.yaml --profile test run --rm tests
+docker compose -f compose.yaml -f compose.test.yaml --profile test stop db-test
+```
+
+Esperado: 73 PHP válidos; 147 unitarias/436 aserciones; 23 casos acumulados
+MySQL preparados para ejecución local. La integración incluye ocho nuevos
+casos y un proceso auxiliar que observa una espera InnoDB en el servidor
+privado db-test. Los triggers de fallo y limpieza existen solo en pruebas.
+
+Atención en `/tickets/detalle?id=...`: solo se muestran las acciones permitidas.
+Cada escritura usa la versión de la página; recargar después de otras acciones.
+Todos pueden comentar en tickets autorizados no cerrados; autor/rol se toman
+
+del servidor. Cerrado: consulta únicamente. Las acciones no envían correos,
+no borran comentarios y no permiten reapertura.

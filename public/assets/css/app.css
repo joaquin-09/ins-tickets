@@ -32,6 +32,7 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; }
 .state-en_progreso { background: #fff0c2; color: #6a4600; }
 .state-resuelto { background: #d3f1dd; color: #175d32; }
 .state-cerrado { background: #e4e9ef; color: #33485d; }
+.assignment-select { max-width: 440px; }
 @media (max-width: 760px) {
     .app-shell { grid-template-columns: minmax(0,1fr); }
     .sidebar { padding: 1rem; }

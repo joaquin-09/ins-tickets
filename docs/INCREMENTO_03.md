@@ -93,3 +93,11 @@ por otro integrante y aceptación final siguen sin confirmar.
 > Integración MySQL (15 casos acumulados) y aceptación Windows pendientes.
 > No hay cambios de esquema/semilla. Atención RF06–RF09 y reportes RF12–RF14
 > pendientes. Commit local/revisor del incremento 3 todavía pendientes.
+
+## Confirmación posterior
+
+El usuario informó «Todo bien» y confirmó commit
+beba1299b5f49efec3f36a18746d34d20eee079a, feature/tickets sincronizada y
+árbol limpio. Se registra como funcionamiento correcto reportado, sin
+convertirlo en salidas de PHPUnit, números de aserciones locales, capturas
+o aceptación documentada de cada caso que no se hayan recibido.
