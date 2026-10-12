@@ -26,7 +26,11 @@ $flash = Session::takeFlash();
             <a class="brand" href="/">INS Tickets<span>NexoTI Solutions</span></a>
             <nav aria-label="Navegación principal">
                 <a href="/">Inicio</a>
+                <a href="/tickets/mis">Mis solicitudes</a>
+                <a href="/tickets/crear">Crear ticket</a>
+                <?php if ($currentUser->role === 'agente'): ?><a href="/tickets/asignados">Asignados a mí</a><?php endif; ?>
                 <?php if ($currentUser->role === 'administrador'): ?>
+                    <a href="/tickets">Gestión de tickets</a>
                     <a href="/usuarios">Usuarios</a>
                     <a href="/categorias">Categorías</a>
                 <?php endif; ?>

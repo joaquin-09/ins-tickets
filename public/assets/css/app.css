@@ -25,6 +25,13 @@ h1 { font-size: clamp(1.7rem,3vw,2.15rem); font-weight: 700; }
 .table th { background: #eaf0f6; color: #304b66; padding: 1rem; }
 .table td { padding: 1rem; }
 .actions { white-space: nowrap; }
+.ticket-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.conversation-entry { padding: 1rem 0; border-bottom: 1px solid #d8e0e8; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.state-abierto { background: #dceaff; color: #17437d; }
+.state-en_progreso { background: #fff0c2; color: #6a4600; }
+.state-resuelto { background: #d3f1dd; color: #175d32; }
+.state-cerrado { background: #e4e9ef; color: #33485d; }
 @media (max-width: 760px) {
     .app-shell { grid-template-columns: minmax(0,1fr); }
     .sidebar { padding: 1rem; }

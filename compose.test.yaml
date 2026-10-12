@@ -40,4 +40,4 @@ services:
     depends_on:
       db-test:
         condition: service_healthy
-    command: ["php", "vendor/bin/phpunit", "-c", "phpunit.integration.xml", "--log-junit", "storage/reports/integracion-02.xml"]
+    command: ["php", "vendor/bin/phpunit", "-c", "phpunit.integration.xml", "--log-junit", "storage/reports/integracion.xml"]

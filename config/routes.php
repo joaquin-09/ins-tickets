@@ -6,6 +6,8 @@ use InsTickets\Controllers\HomeController;
 use InsTickets\Controllers\AuthController;
 use InsTickets\Controllers\UserController;
 use InsTickets\Controllers\CategoryController;
+use InsTickets\Controllers\TicketController;
+use InsTickets\Core\Auth;
 use InsTickets\Core\Router;
 
 $router = new Router();
@@ -28,5 +30,14 @@ $router->get('/categorias/formulario', [$categories, 'form']);
 $router->post('/categorias/salvar', [$categories, 'save']);
 $router->get('/categorias/confirmar-eliminacion', [$categories, 'deleteForm']);
 $router->post('/categorias/eliminar', [$categories, 'delete']);
+$tickets = new TicketController();
+$router->get('/tickets', static fn () => $tickets->index(Auth::requireUser()->role === 'administrador' ? 'all' : 'mine'));
+$router->get('/tickets/mis', static fn () => $tickets->index('mine'));
+$router->get('/tickets/asignados', static fn () => $tickets->index('assigned'));
+$router->get('/tickets/detalle', [$tickets, 'detail']);
+$router->get('/tickets/crear', [$tickets, 'createForm']);
+$router->post('/tickets/crear', [$tickets, 'create']);
+$router->get('/tickets/editar', [$tickets, 'editForm']);
+$router->post('/tickets/editar', [$tickets, 'edit']);
 
 return $router;

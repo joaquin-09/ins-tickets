@@ -112,3 +112,11 @@ tickets ni reinicializar la demo. Agregar observado/evidencia a cada caso.
 > verificada por el usuario con PHP 8.4.26/MySQL 8.4.11. Se conservan esquema,
 > datos y secretos. Commit del incremento 2 y revisor pendientes. Próximo:
 > tickets RF03/RF04/RF05/RF15, sin modificar decisiones del maestro 1.3.
+
+## Confirmación recibida del usuario
+
+Commit 2463f7bbe8837051cf4c96f6ad8a8e724733bf95, feature/acceso-admin
+sincronizada y árbol limpio. El 12/10/2026 el usuario confirmó que las pruebas
+pasaron. Se registra como aprobación reportada por el usuario, sin salidas
+detalladas ni evidencia de cada caso manual. No inventar número observado de
+aserciones, capturas, revisión de otro integrante ni aceptación final.

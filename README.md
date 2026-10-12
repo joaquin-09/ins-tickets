@@ -4,17 +4,21 @@ Sistema de soporte interno para la organización **ficticia** NexoTI Solutions.
 Proyecto académico INS104. Diseño definitivo: maestro 1.3, sección 14.
 Entrega prevista: miércoles 14 de octubre de 2026.
 
-## Estado: incremento 02-acceso-admin
+## Estado: incremento 03-tickets
 
-Base del incremento 2: `a6905809b1de967c33c1edc00ec5c625113d0a14`.
-Implementados: login/logout, sesiones, roles verificados desde BD, cambio de
-contraseña propia, gestión administrativa de usuarios y categorías, CSRF,
-límite de intentos y controles de integridad. RF01, RF02, RF10 y RF11
-implementados con aceptación local pendiente. Tickets, atención y paneles/
-reportes aún pendientes. Ver `docs/INCREMENTO_02.md`.
+Base del incremento 3: `2463f7bbe8837051cf4c96f6ad8a8e724733bf95`.
+Acceso/administración implementados en incremento 2; el usuario informa que
+sus pruebas pasaron, sin aportar salidas detalladas. Ahora se implementan
+RF03/RF04/RF05/RF15: creación propia, listas por rol, detalle, edición
+restringida, búsqueda/filtros, paginación de 20 y protección contra reenvío.
+Creación/edición y su evento son transaccionales; se controla versión y
+categoría activa/histórica. Ver `docs/INCREMENTO_03.md`.
 
-El usuario verificó el incremento 1 en Windows/Docker: PHP 8.4.26, MySQL
-8.4.11, dos servicios healthy, seis tablas, semilla y sintaxis PHP OK.
+Atención RF06–RF09 y paneles/reportes RF12–RF14 siguen pendientes. Consulta
+histórica de eventos/comentarios disponible; creación de comentarios y
+transiciones se incorporan en incremento 4. Aceptación final todavía pendiente.
+
+El usuario verificó base 1: PHP 8.4.26/MySQL 8.4.11, healthy y semilla OK.
 Los commits siguen siendo responsabilidad del usuario.
 
 ## Tecnologías y estructura
@@ -79,11 +83,11 @@ ejecutadas. `check-demo.php` es de lectura y exige esa semilla sin cambios.
 
 ## Comprobaciones y próximos módulos
 
-Ver `docs/INCREMENTO_01.md` y `docs/INCREMENTO_02.md` para resultados por entorno
+Ver `docs/INCREMENTO_01.md`, `docs/INCREMENTO_02.md` y `docs/INCREMENTO_03.md` para resultados por entorno
 y verificaciones locales pendientes. El chequeo de semilla intacta no debe
 repetirse después de usar login/administración: los datos ya pueden cambiar.
 Ver `docs/INSTALACION_MANUAL.md` para la misma aplicación sin Docker.
-Próximos: tickets; atención; paneles/reportes; validación
+Próximos: atención; paneles/reportes; validación
 y entrega. No etiquetar `v1.0.0` hasta satisfacer aceptación de RF01–RF15.
 
 ## Seguridad e integridad de esta base
@@ -94,7 +98,7 @@ cabeceras defensivas, mensajes internos genéricos y cuenta MySQL `ins_app`
 con privilegios por tabla. Sin DELETE sobre tickets ni UPDATE/DELETE sobre
 comentarios o historial. PK, FK sin cascadas, unicidad, índices y CHECK en BD.
 Permisos por rol administrativo, CSRF, sesiones e intentos implementados en incremento 2;
-políticas de tickets y concurrencia, en incrementos 3–4.
+políticas de creación/edición y concurrencia implementadas en 3; atención transaccional pendiente en 4.
 
 Para futuras publicaciones remotas se requerirá HTTPS y cookies Secure; esta
 instalación local usa HTTP y no constituye despliegue público.
@@ -128,3 +132,25 @@ no publica puertos. La cuenta de mantenimiento limpia únicamente ese servidor
 antes de cada caso. El bootstrap rechaza cualquier host distinto de db-test.
 No ejecutar PHPUnit integration directamente en el contenedor app de la demo.
 Resultados JUnit locales en `storage/reports/`, ignorados por Git.
+
+## Aplicación del incremento 3 sobre instalación existente
+
+No repetir setup-env, semilla ni inicialización SQL; no cambia el esquema.
+Aplicar el parche y desde PowerShell:
+
+```powershell
+docker compose exec -T app composer install --no-interaction --prefer-dist
+docker compose restart app
+docker compose exec -T app php scripts/lint.php
+docker compose exec -T app php vendor/bin/phpunit --log-junit storage/reports/unit-03.xml
+docker compose -f compose.yaml -f compose.test.yaml --profile test config --quiet
+docker compose -f compose.yaml -f compose.test.yaml --profile test run --rm tests
+docker compose -f compose.yaml -f compose.test.yaml --profile test stop db-test
+```
+
+Esperado: 63 archivos PHP válidos; 96 unitarias/199 aserciones; integración
+con 15 casos preparada para ejecución local, todavía no ejecutada aquí.
+`/tickets/mis` para cualquier rol; `/tickets/asignados` para agentes;
+`/tickets` global solo para administrador, y propia para los otros roles.
+Crear/editar desde menú y detalle. Fechas mostradas en America/El_Salvador.
+Las cuentas QA/datos creados por el equipo se conservan; no borrar tickets.
