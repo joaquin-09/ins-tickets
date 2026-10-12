@@ -1,0 +1,30 @@
+{
+    "name": "nexoti/ins-tickets",
+    "description": "Sistema academico de soporte interno; linea base 1.3",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": "~8.4.0",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~12.5.0"
+    },
+    "autoload": {
+        "psr-4": {"InsTickets\\": "app/"}
+    },
+    "autoload-dev": {
+        "psr-4": {"InsTickets\\Tests\\": "tests/"}
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {"php": "8.4.0"}
+    },
+    "scripts": {
+        "test": "phpunit",
+        "check": "php scripts/check.php",
+        "seed": "php scripts/seed.php"
+    }
+}

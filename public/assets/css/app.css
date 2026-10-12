@@ -1,0 +1,6 @@
+:root { --ins-navy: #183452; }
+body { background: #f3f6fa; color: #172c42; }
+.brand-header { background: var(--ins-navy); color: white; }
+.skip-link { position: absolute; top: -100px; left: 1rem; padding: .75rem; background: white; z-index: 1000; }
+.skip-link:focus { top: 1rem; }
+:focus-visible { outline: 3px solid #b55a00; outline-offset: 3px; }

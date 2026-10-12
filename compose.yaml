@@ -1,0 +1,53 @@
+name: ins-tickets
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    ports:
+      - "127.0.0.1:${APP_PORT:-8080}:80"
+    environment:
+      APP_ENV: local
+      APP_URL: "${APP_URL:-http://localhost:8080}"
+      APP_KEY: "${APP_KEY:?Ejecutar scripts/setup-env.ps1}"
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_NAME: ins_tickets
+      DB_USER: ins_app
+      DB_PASSWORD: "${DB_PASSWORD:?Ejecutar scripts/setup-env.ps1}"
+    volumes:
+      - .:/var/www/html
+      - app_logs:/var/www/html/storage/logs
+      - app_sessions:/var/www/html/storage/sessions
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php", "scripts/health.php"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+  db:
+    image: mysql:8.4@sha256:6ea90827b1100f8f2ae306a539f86d2c264a26ed435a2a9f75551dd5c3aeb242
+    environment:
+      MYSQL_DATABASE: ins_tickets
+      MYSQL_USER: ins_app
+      MYSQL_PASSWORD: "${DB_PASSWORD:?Ejecutar scripts/setup-env.ps1}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:?Ejecutar scripts/setup-env.ps1}"
+      TZ: UTC
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_ai_ci", "--default-time-zone=+00:00"]
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/10-schema.sql:ro
+      - ./database/permissions.sql:/docker-entrypoint-initdb.d/20-permissions.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_PASSWORD\" mysql --protocol=TCP -h 127.0.0.1 -u ins_app ins_tickets -Nse 'SELECT COUNT(*) FROM categorias' >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+volumes:
+  mysql_data:
+  app_logs:
+  app_sessions:
