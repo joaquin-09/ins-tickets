@@ -39,12 +39,21 @@ $flash = Session::takeFlash();
             </nav>
             <div class="sidebar-account">
                 <strong><?= View::escape($currentUser->name) ?></strong><span><?= View::escape($currentUser->role) ?></span>
-                <form method="post" action="/logout"><input type="hidden" name="_csrf" value="<?= View::escape(Csrf::token()) ?>"><button class="btn btn-outline-light w-100 mt-3" type="submit">Cerrar sesión</button></form>
             </div>
         </aside>
     <?php endif; ?>
     <div class="workspace">
-        <header class="workspace-header"><span>Soporte interno</span><span>Proyecto académico</span></header>
+        <header class="workspace-header">
+            <span>Soporte interno</span>
+            <?php if ($currentUser !== null): ?>
+                <form method="post" action="/logout" class="header-logout">
+                    <input type="hidden" name="_csrf" value="<?= View::escape(Csrf::token()) ?>">
+                    <button class="btn btn-outline-primary" type="submit">Cerrar sesión</button>
+                </form>
+            <?php else: ?>
+                <span>Proyecto académico</span>
+            <?php endif; ?>
+        </header>
         <main id="contenido" class="content" tabindex="-1">
             <?php if ($flash !== null): ?><div class="alert alert-info" role="status"><?= View::escape($flash) ?></div><?php endif; ?>
             <?= $content ?>

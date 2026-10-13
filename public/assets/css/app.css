@@ -15,7 +15,9 @@ body { background: #f3f6fa; color: #172c42; }
 .sidebar-account { margin-top: auto; padding-top: 3rem; font-size: .9rem; }
 .sidebar-account strong, .sidebar-account span { display: block; }
 .workspace { min-width: 0; }
-.workspace-header { background: #fff; padding: 1.25rem 2rem; display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #d8e0e8; color: #526477; }
+.workspace-header { position: sticky; top: 0; z-index: 100; align-items: center; background: #fff; padding: 1.25rem 2rem; display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #d8e0e8; color: #526477; }
+.header-logout { flex-shrink: 0; margin: 0; }
+[id] { scroll-margin-top: 6rem; }
 .content { padding: 2rem; max-width: 1440px; margin: 0 auto; }
 .page-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.8rem; }
 .eyebrow { font-size: .75rem; letter-spacing: .12rem; font-weight: 700; color: #45627f; }
@@ -40,7 +42,6 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; }
     .sidebar nav { display: flex; flex-wrap: wrap; gap: .25rem; }
     .sidebar nav a { padding: .6rem; }
     .sidebar-account { padding-top: 1rem; }
-    .sidebar-account form { max-width: 220px; }
     .content, .workspace-header { padding: 1.25rem; }
     .page-heading { align-items: flex-start; flex-direction: column; }
 }
