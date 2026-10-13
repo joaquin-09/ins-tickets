@@ -2,7 +2,9 @@
 
 Base confirmada `beba1299b5f49efec3f36a18746d34d20eee079a`, rama
 feature/tickets sincronizada y limpia. Diseño definitivo: maestro 1.3, §14.
-Commit de aplicación pendiente del usuario; no se crearon commits por él.
+Commit de aplicación confirmado por el usuario:
+`7dc07fd56a9d09b11b1228dd0896442d3104b508`, feature/atencion limpia y
+sincronizada. No se recibieron salidas de pruebas locales del incremento 4.
 
 ## Requisitos implementados
 
@@ -111,5 +113,5 @@ ejecutan solo con Compose de pruebas y guardas APP_ENV=test/DB_HOST=db-test.
 > Transacciones con bloqueo y versión; datos existentes conservados. Auxiliar
 > PHP 8.3.6: 147 unitarias/436 aserciones, 73 PHP y render/HTTP comprobados.
 > Integración MySQL (23 casos preparados) y aceptación local pendientes.
-> Commit/revisor pendientes. Próximo: paneles/reportes RF12–RF14; después
+> Commit confirmado 7dc07fd56a9d09b11b1228dd0896442d3104b508; revisor pendiente. Próximo: paneles/reportes RF12–RF14; después
 > validación, cobertura, desempeño, respaldo/restauración y entrega.

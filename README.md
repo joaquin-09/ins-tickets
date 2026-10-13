@@ -4,20 +4,20 @@ Sistema de soporte interno para la organización **ficticia** NexoTI Solutions.
 Proyecto académico INS104. Diseño definitivo: maestro 1.3, sección 14.
 Entrega prevista: miércoles 14 de octubre de 2026.
 
-## Estado: incremento 04-atencion
+## Estado: incremento 05-reportes
 
-Base: `beba1299b5f49efec3f36a18746d34d20eee079a`, feature/tickets limpia y
-sincronizada. El usuario informó funcionamiento correcto del incremento 3;
-no se recibieron aquí salidas detalladas de pruebas ni de cada caso manual.
+Base confirmada: `7dc07fd56a9d09b11b1228dd0896442d3104b508`,
+feature/atencion limpia y sincronizada. No se recibieron resultados locales
+específicos de las pruebas del incremento 4; siguen pendientes.
 
-Implementados RF01–RF11 y RF15: acceso/administración, tickets y atención.
-El incremento 4 agrega RF06/RF07/RF08/RF09: asignación/reasignación, flujo
-abierto → en progreso → resuelto → cerrado, comentarios, historial, fechas,
-resolutor/cerrador, primera respuesta válida y operaciones atómicas con
-bloqueo/versionado. Se conservan esquema, secretos y datos existentes.
-RF12–RF14 (paneles/reportes) y aceptación final aún pendientes.
+RF01–RF15 cuentan con implementación. Este incremento agrega RF12/RF13/RF14:
+paneles por conjunto autorizado y reportes administrativos, con filtros
+comunes, atribución actual/histórica separada y promedios desde la BD.
+**Implementación no equivale a aceptación:** faltan integración MySQL local,
+revisión independiente, cobertura, desempeño, instalación/restauración y demo.
+El incremento 6 completará validación y entrega; no hay versión final aceptada.
 
-Ver `docs/INCREMENTO_04.md` para reglas, pruebas por entorno y demo manual.
+Ver `docs/INCREMENTO_05.md` para reglas, pruebas por entorno y verificación manual.
 Los commits siguen siendo responsabilidad del usuario.
 
 ## Tecnologías y estructura
@@ -82,12 +82,11 @@ ejecutadas. `check-demo.php` es de lectura y exige esa semilla sin cambios.
 
 ## Comprobaciones y próximos módulos
 
-Ver `docs/INCREMENTO_01.md`, `docs/INCREMENTO_02.md` `docs/INCREMENTO_03.md` y `docs/INCREMENTO_04.md` para resultados por entorno
+Ver `docs/INCREMENTO_01.md`, `docs/INCREMENTO_02.md` `docs/INCREMENTO_03.md`, `docs/INCREMENTO_04.md` y `docs/INCREMENTO_05.md` para resultados por entorno
 y verificaciones locales pendientes. El chequeo de semilla intacta no debe
 repetirse después de usar login/administración: los datos ya pueden cambiar.
 Ver `docs/INSTALACION_MANUAL.md` para la misma aplicación sin Docker.
-Próximos: paneles/reportes; validación
-y entrega. No etiquetar `v1.0.0` hasta satisfacer aceptación de RF01–RF15.
+Próximo: validación y entrega. No etiquetar `v1.0.0` hasta satisfacer aceptación de RF01–RF15.
 
 ## Seguridad e integridad de esta base
 
@@ -115,7 +114,7 @@ docker compose exec -T app php vendor/bin/phpunit --log-junit storage/reports/un
 
 Abrir <http://localhost:8080/login>. Login con cuentas demo; menú administrativo
 solo para administrador. Los demás roles ven Inicio/Mi contraseña/Cerrar sesión.
-La portada no simula paneles ni funciones de tickets pendientes.
+Los paneles se incorporaron en el incremento 5.
 
 Integración en servidor aislado (utiliza la imagen app ya construida):
 
@@ -179,3 +178,33 @@ Todos pueden comentar en tickets autorizados no cerrados; autor/rol se toman
 
 del servidor. Cerrado: consulta únicamente. Las acciones no envían correos,
 no borran comentarios y no permiten reapertura.
+
+## Aplicación del incremento 5 sobre instalación existente
+
+Conservar .env, dependencias y datos. No requiere migración ni nueva semilla.
+Después de aplicar el parche, ejecutar desde PowerShell:
+
+```powershell
+docker compose exec -T app composer install --no-interaction --prefer-dist
+docker compose restart app
+docker compose exec -T app php scripts/check.php
+docker compose exec -T app php scripts/lint.php
+docker compose exec -T app php vendor/bin/phpunit --log-junit storage/reports/unit-05.xml
+docker compose -f compose.yaml -f compose.test.yaml --profile test config --quiet
+docker compose -f compose.yaml -f compose.test.yaml --profile test run --rm tests
+docker compose -f compose.yaml -f compose.test.yaml --profile test stop db-test
+```
+
+Esperado: 81 PHP válidos; 165 unitarias/467 aserciones; 28 casos acumulados
+MySQL preparados. Aquí se ejecutaron solo las unitarias y lint en auxiliar
+PHP 8.3.6; MySQL y Windows no están disponibles en ese entorno.
+
+`/` muestra el panel autorizado. `/reportes` es exclusivo del administrador:
+desde/hasta filtran creación por días completos en America/El_Salvador;
+estado, prioridad, categoría y agente actual afectan todas las cifras.
+Agrupaciones paginadas por 20, incluidos agentes históricos y categorías
+inactivas. Resueltos por resolutor incluye cerrado y administradores que
+resolvieron. Promedios en horas con dos decimales y muestra n; ausencia de
+muestra se presenta como Sin datos. No se agregan exportaciones.
+
+Consultar `docs/INCREMENTO_05.md` para prueba manual, esperados y estado real.

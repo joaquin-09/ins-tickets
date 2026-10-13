@@ -8,6 +8,7 @@ use InsTickets\Controllers\UserController;
 use InsTickets\Controllers\CategoryController;
 use InsTickets\Controllers\TicketController;
 use InsTickets\Controllers\AttentionController;
+use InsTickets\Controllers\ReportController;
 use InsTickets\Core\Auth;
 use InsTickets\Core\Router;
 
@@ -44,5 +45,7 @@ $attention = new AttentionController();
 $router->post('/tickets/asignar', [$attention, 'assign']);
 $router->post('/tickets/transicion', [$attention, 'transition']);
 $router->post('/tickets/comentar', [$attention, 'comment']);
+
+$router->get('/reportes', [new ReportController(), 'index']);
 
 return $router;

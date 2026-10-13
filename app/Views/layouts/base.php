@@ -31,6 +31,7 @@ $flash = Session::takeFlash();
                 <?php if ($currentUser->role === 'agente'): ?><a href="/tickets/asignados">Asignados a mí</a><?php endif; ?>
                 <?php if ($currentUser->role === 'administrador'): ?>
                     <a href="/tickets">Gestión de tickets</a>
+                    <a href="/reportes">Reportes</a>
                     <a href="/usuarios">Usuarios</a>
                     <a href="/categorias">Categorías</a>
                 <?php endif; ?>
