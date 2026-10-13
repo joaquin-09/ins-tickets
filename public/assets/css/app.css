@@ -12,12 +12,17 @@ body { background: #f3f6fa; color: #172c42; }
 .sidebar nav { display: grid; gap: .45rem; }
 .sidebar nav a { color: #fff; padding: .8rem 1rem; text-decoration: none; border-radius: .45rem; }
 .sidebar nav a:hover { background: #2a507a; }
-.sidebar-account { margin-top: auto; padding-top: 3rem; font-size: .9rem; }
-.sidebar-account strong, .sidebar-account span { display: block; }
 .workspace { min-width: 0; }
-.workspace-header { position: sticky; top: 0; z-index: 100; align-items: center; background: #fff; padding: 1.25rem 2rem; display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #d8e0e8; color: #526477; }
-.header-logout { flex-shrink: 0; margin: 0; }
-[id] { scroll-margin-top: 6rem; }
+.workspace-header { position: sticky; top: 0; z-index: 100; align-items: center; background: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #d8e0e8; color: #526477; }
+.header-context { font-size: .9rem; font-weight: 600; }
+.header-account { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: .85rem; min-width: 0; max-width: 100%; margin-left: auto; padding: .65rem .85rem; border: 1px solid #d8e4f0; border-radius: .8rem; background: #f3f7fc; }
+.account-avatar { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--ins-navy); color: #fff; font-weight: 700; }
+.account-identity { min-width: 0; max-width: 22rem; }
+.account-name { display: block; color: var(--ins-navy); font-size: .95rem; line-height: 1.3; overflow-wrap: anywhere; }
+.account-role { display: inline-block; margin-top: .25rem; padding: .1rem .5rem; border: 1px solid #cad9e9; border-radius: 1rem; background: #fff; color: #304b66; font-size: .75rem; line-height: 1.4; }
+.header-logout { margin: 0; }
+.header-logout button { white-space: nowrap; }
+[id] { scroll-margin-top: 9rem; }
 .content { padding: 2rem; max-width: 1440px; margin: 0 auto; }
 .page-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.8rem; }
 .eyebrow { font-size: .75rem; letter-spacing: .12rem; font-weight: 700; color: #45627f; }
@@ -41,7 +46,15 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; }
     .brand { margin-bottom: 1rem; }
     .sidebar nav { display: flex; flex-wrap: wrap; gap: .25rem; }
     .sidebar nav a { padding: .6rem; }
-    .sidebar-account { padding-top: 1rem; }
-    .content, .workspace-header { padding: 1.25rem; }
+    .content { padding: 1.25rem; }
+    .workspace-header { flex-wrap: wrap; gap: .65rem; padding: 1rem; }
+    .header-account { width: 100%; margin-left: 0; gap: .6rem; }
+    .account-identity { max-width: none; }
     .page-heading { align-items: flex-start; flex-direction: column; }
+}
+
+@media (max-width: 420px) {
+    .header-account { grid-template-columns: minmax(0,1fr) auto; padding: .65rem; }
+    .account-avatar { display: none; }
+    .header-logout button { padding-right: .65rem; padding-left: .65rem; }
 }

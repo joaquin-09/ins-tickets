@@ -37,19 +37,23 @@ $flash = Session::takeFlash();
                 <?php endif; ?>
                 <a href="/cuenta/password">Mi contraseña</a>
             </nav>
-            <div class="sidebar-account">
-                <strong><?= View::escape($currentUser->name) ?></strong><span><?= View::escape($currentUser->role) ?></span>
-            </div>
         </aside>
     <?php endif; ?>
     <div class="workspace">
         <header class="workspace-header">
-            <span>Soporte interno</span>
+            <span class="header-context">Soporte interno</span>
             <?php if ($currentUser !== null): ?>
-                <form method="post" action="/logout" class="header-logout">
-                    <input type="hidden" name="_csrf" value="<?= View::escape(Csrf::token()) ?>">
-                    <button class="btn btn-outline-primary" type="submit">Cerrar sesión</button>
-                </form>
+                <div class="header-account" role="group" aria-label="Cuenta actual">
+                    <span class="account-avatar" aria-hidden="true"><?= View::escape(mb_strtoupper(mb_substr($currentUser->name, 0, 1, 'UTF-8'), 'UTF-8')) ?></span>
+                    <div class="account-identity">
+                        <strong class="account-name"><?= View::escape($currentUser->name) ?></strong>
+                        <span class="account-role"><?= View::escape(['usuario' => 'Usuario', 'agente' => 'Agente', 'administrador' => 'Administrador'][$currentUser->role] ?? $currentUser->role) ?></span>
+                    </div>
+                    <form method="post" action="/logout" class="header-logout">
+                        <input type="hidden" name="_csrf" value="<?= View::escape(Csrf::token()) ?>">
+                        <button class="btn btn-primary" type="submit">Cerrar sesión</button>
+                    </form>
+                </div>
             <?php else: ?>
                 <span>Proyecto académico</span>
             <?php endif; ?>
