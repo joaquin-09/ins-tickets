@@ -2,7 +2,8 @@
 
 Base confirmada: `7dc07fd56a9d09b11b1228dd0896442d3104b508`, rama
 feature/atencion limpia y sincronizada. Maestro 1.3, §14.7 y §14.8.
-El usuario crea el commit del módulo; no se creó por él.
+Commit confirmado por el usuario: e64b4140140bd6dcb83cdbba8fb220c99ff58d76,
+feature/reportes limpia y sincronizada. No se recibieron sus salidas de pruebas.
 
 ## Funciones y requisitos
 
@@ -160,5 +161,5 @@ salida. El commit de entrega será el SHA que informe el usuario, no uno supuest
 > históricas; promedios desde BD en horas con n y Sin datos sin muestra.
 > Auxiliar PHP 8.3.6: 165 unitarias/467 aserciones y 81 PHP válidos; render/HTTP
 > comprobados con fixtures. Integración MySQL: 28 casos preparados, no ejecutados
-> aquí. Commit del módulo, resultados Windows, revisión independiente y aceptación
+> aquí. Commit del módulo confirmado e64b414...; resultados Windows, revisión independiente y aceptación
 > pendientes. Próximo: validación y entrega; no hay versión final aceptada.

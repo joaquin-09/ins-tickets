@@ -4,32 +4,28 @@ Sistema de soporte interno para la organización **ficticia** NexoTI Solutions.
 Proyecto académico INS104. Diseño definitivo: maestro 1.3, sección 14.
 Entrega prevista: miércoles 14 de octubre de 2026.
 
-## Estado: incremento 05-reportes
+## Estado: incremento 06-validacion
 
-Base confirmada: `7dc07fd56a9d09b11b1228dd0896442d3104b508`,
-feature/atencion limpia y sincronizada. No se recibieron resultados locales
-específicos de las pruebas del incremento 4; siguen pendientes.
+Base confirmada: `e64b4140140bd6dcb83cdbba8fb220c99ff58d76`,
+feature/reportes limpia y sincronizada. RF01–RF15 implementados; **aceptación
+final pendiente**. No se recibieron resultados locales de incrementos 4/5.
 
-RF01–RF15 cuentan con implementación. Este incremento agrega RF12/RF13/RF14:
-paneles por conjunto autorizado y reportes administrativos, con filtros
-comunes, atribución actual/histórica separada y promedios desde la BD.
-**Implementación no equivale a aceptación:** faltan integración MySQL local,
-revisión independiente, cobertura, desempeño, instalación/restauración y demo.
-El incremento 6 completará validación y entrega; no hay versión final aceptada.
-
-Ver `docs/INCREMENTO_05.md` para reglas, pruebas por entorno y verificación manual.
-Los commits siguen siendo responsabilidad del usuario.
+Este módulo incorpora seguridad/integridad, cobertura, medición de desempeño,
+instalación separada, respaldo/restauración, manuales y preparación de entrega.
+No implica pruebas MySQL/Windows aprobadas ni paquete final ya generado.
+Ver `docs/INCREMENTO_06.md`: ejecución, resultados por entorno y pendientes.
+Los commits y la aprobación académica corresponden al usuario/equipo.
 
 ## Tecnologías y estructura
 
 PHP 8.4.x, MVC propio, PDO nativo, MySQL 8.4.x InnoDB/utf8mb4, Composer 2,
-Bootstrap 5.3.8 local y PHPUnit 12.5.x (dependencia preparada para los módulos).
+Bootstrap 5.3.8 local y PHPUnit 12.5.x para pruebas automatizadas.
 Las imágenes de referencia se fijan por digest en Compose y Dockerfile;
 `composer.lock` fija el árbol de dependencias. Los parches no ejecutan commits.
 
 - `public/`: única raíz pública; controlador frontal y recursos locales.
 - `app/Controllers`, `Models`, `Services`, `Repositories`, `Views`: módulos MVC.
-- `app/Core`: infraestructura mínima. Reglas de negocio se agregarán en servicios.
+- `app/Core`: infraestructura mínima. Reglas de negocio y transacciones en servicios.
 - `bootstrap/`, `config/`: configuración privada y rutas internas.
 - `database/`: esquema y privilegios, ejecutados por mantenimiento.
 - `docker/`, `compose.yaml`: instalación de referencia.
@@ -86,7 +82,7 @@ Ver `docs/INCREMENTO_01.md`, `docs/INCREMENTO_02.md` `docs/INCREMENTO_03.md`, `d
 y verificaciones locales pendientes. El chequeo de semilla intacta no debe
 repetirse después de usar login/administración: los datos ya pueden cambiar.
 Ver `docs/INSTALACION_MANUAL.md` para la misma aplicación sin Docker.
-Próximo: validación y entrega. No etiquetar `v1.0.0` hasta satisfacer aceptación de RF01–RF15.
+Validación y entrega preparadas en incremento 6; ejecutar y registrar aceptación. No etiquetar `v1.0.0` hasta satisfacer aceptación de RF01–RF15.
 
 ## Seguridad e integridad de esta base
 
@@ -208,3 +204,20 @@ resolvieron. Promedios en horas con dos decimales y muestra n; ausencia de
 muestra se presenta como Sin datos. No se agregan exportaciones.
 
 Consultar `docs/INCREMENTO_05.md` para prueba manual, esperados y estado real.
+
+## Validación y entrega (incremento 6)
+
+En instalación existente, después de aplicar el parche:
+
+```powershell
+docker compose exec -T app composer install --no-interaction --prefer-dist
+docker compose restart app
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-validation.ps1
+```
+
+Este flujo construye la imagen de pruebas con PCOV; usa bases temporales distintas
+de la demo y conserva los resultados reales en storage/reports. Para instalación
+nueva/respaldo/restauración y paquete del commit limpio seguir INCREMENTO_06.md.
+Manual técnico: docs/MANUAL_TECNICO.md. Manual por rol: docs/MANUAL_USUARIO.md.
+Guion: docs/DEMOSTRACION.md. Matriz inicial pendiente: docs/ACEPTACION.csv.
+No hay versión v1.0.0 aceptada ni documentos académicos inventados.

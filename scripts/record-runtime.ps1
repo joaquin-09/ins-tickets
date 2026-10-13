@@ -15,7 +15,12 @@ try {
     $manifest = [ordered]@{
         recorded_at_utc = [DateTime]::UtcNow.ToString('o')
         baseline = '1.3'
-        increment = '05-reportes'
+        increment = '06-validacion'
+        source_commit = ((& git rev-parse HEAD) -join '').Trim()
+        source_dirty = [bool](& git status --porcelain)
+        os = [Environment]::OSVersion.VersionString
+        docker = Invoke-DockerText @('version','--format','{{.Server.Version}}')
+        compose = Invoke-DockerText @('compose','version','--short')
         php = Invoke-DockerText @('compose','exec','-T','app','php','-r','echo PHP_VERSION;')
         mysql = Invoke-DockerText @('compose','exec','-T','db','mysql','--version')
         composer = Invoke-DockerText @('compose','exec','-T','app','composer','--version')

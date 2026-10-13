@@ -6,8 +6,8 @@
 | 02-acceso-admin | RF01, RF02, RF10, RF11; contraseña propia y controles de acceso. | Commit 2463f7bbe8837051cf4c96f6ad8a8e724733bf95. El usuario informa pruebas aprobadas, sin salidas detalladas. Aceptación manual y revisión por otro integrante no confirmadas. |
 | 03-tickets | RF03, RF04, RF05, RF15; autorización, paginación y doble envío. | Commit beba1299b5f49efec3f36a18746d34d20eee079a. Usuario informa «Todo bien», sin resultados detallados; revisión/aceptación individual no confirmadas. |
 | 04-atencion | RF06, RF07, RF08, RF09; eventos, transacciones y concurrencia. | Commit 7dc07fd56a9d09b11b1228dd0896442d3104b508 confirmado limpio y subido. 147 unitarias/436 aserciones y 73 PHP válidos en auxiliar 8.3.6. Sin resultados locales recibidos para este módulo; integración y aceptación pendientes. |
-| 05-reportes | RF12, RF13, RF14; paneles autorizados y métricas desde BD. | Implementado contra 7dc07fd56a9d09b11b1228dd0896442d3104b508. Auxiliar PHP 8.3.6: 165 unitarias/467 aserciones y 81 PHP válidos. 28 casos MySQL acumulados preparados, no ejecutados aquí. Commit, pruebas locales y aceptación pendientes. |
-| 06-validacion | Pruebas, instalación, backup/restauración, correcciones y demo. | Pendiente. |
+| 05-reportes | RF12, RF13, RF14; paneles autorizados y métricas desde BD. | Commit e64b4140140bd6dcb83cdbba8fb220c99ff58d76 confirmado limpio/subido; pruebas locales no recibidas. Implementado contra 7dc07fd56a9d09b11b1228dd0896442d3104b508. Auxiliar PHP 8.3.6: 165 unitarias/467 aserciones y 81 PHP válidos. 28 casos MySQL acumulados preparados, no ejecutados aquí. Pruebas locales y aceptación pendientes. |
+| 06-validacion | Pruebas, instalación, backup/restauración, correcciones y demo. | Herramientas/manuales preparados contra e64b4140140bd6dcb83cdbba8fb220c99ff58d76. Auxiliar: 179 unitarias/483 aserciones y 91 PHP válidos. 30 casos MySQL preparados; cobertura/desempeño/HTTP con BD/PowerShell/instalación/restauración/aceptación/paquete pendientes de ejecución Windows. |
 
 Cada entrega debe registrar su commit local, verificaciones y revisión de un
 integrante distinto del autor. El commit y la aceptación no se inventan.

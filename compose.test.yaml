@@ -22,7 +22,10 @@ services:
       retries: 30
       start_period: 40s
   tests:
-    image: ins-tickets-app
+    image: ins-tickets-tests
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile.tests
     profiles: [test]
     working_dir: /var/www/html
     environment:

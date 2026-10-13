@@ -49,8 +49,8 @@ final class TicketRepository
             $result[$key] = trim(Input::string($input, $key));
         }
         $errors = [];
-        if (mb_strlen($result['q']) > 200) {
-            $errors['q'] = 'La búsqueda admite hasta 200 caracteres.';
+        if (!mb_check_encoding($result['q'], 'UTF-8') || mb_strlen($result['q']) > 200) {
+            $errors['q'] = 'La búsqueda admite hasta 200 caracteres UTF-8 válidos.';
         }
         foreach (['estado' => TicketValidation::STATES, 'prioridad' => TicketValidation::PRIORITIES] as $key => $allowed) {
             if ($result[$key] !== '' && !isset($allowed[$result[$key]])) {

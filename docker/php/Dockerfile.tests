@@ -1,0 +1,5 @@
+FROM ins-tickets-app
+# PCOV solo en imagen de pruebas. PHP 8.4: https://pecl.php.net/package/pcov/1.0.12
+RUN pecl install pcov-1.0.12 \
+    && docker-php-ext-enable pcov \
+    && printf 'pcov.enabled=0\n' > /usr/local/etc/php/conf.d/zz-pcov-disabled.ini

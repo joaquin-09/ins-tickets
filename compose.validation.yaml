@@ -1,0 +1,112 @@
+# Bases temporales; nunca utilizan mysql_data ni credenciales reales de la demo.
+services:
+  db-validation:
+    image: mysql:8.4@sha256:6ea90827b1100f8f2ae306a539f86d2c264a26ed435a2a9f75551dd5c3aeb242
+    profiles: [validation]
+    environment:
+      MYSQL_DATABASE: ins_tickets
+      MYSQL_USER: ins_app
+      MYSQL_PASSWORD: validation-application-only
+      MYSQL_ROOT_PASSWORD: validation-maintenance-only
+      MYSQL_ROOT_HOST: "%"
+      TZ: UTC
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_ai_ci", "--default-time-zone=+00:00"]
+    tmpfs: [/var/lib/mysql]
+    volumes:
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/10-schema.sql:ro
+      - ./database/permissions.sql:/docker-entrypoint-initdb.d/20-permissions.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_PASSWORD\" mysql --protocol=TCP -h 127.0.0.1 -u ins_app ins_tickets -Nse 'SELECT COUNT(*) FROM categorias' >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+  web-validation:
+    image: ins-tickets-app
+    profiles: [validation]
+    ports: ["127.0.0.1:8081:80"]
+    environment: &validation-env
+      APP_ENV: validation
+      APP_URL: http://localhost:8081
+      APP_KEY: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+      DB_HOST: db-validation
+      DB_PORT: "3306"
+      DB_NAME: ins_tickets
+      DB_USER: ins_app
+      DB_PASSWORD: validation-application-only
+      VALIDATION_ROOT_PASSWORD: validation-maintenance-only
+    volumes: [".:/var/www/html"]
+    tmpfs:
+      - /var/www/html/storage/sessions:uid=33,gid=33,mode=0770
+      - /var/www/html/storage/logs:uid=33,gid=33,mode=0770
+    depends_on:
+      db-validation: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "php", "scripts/health.php"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+  validation:
+    image: ins-tickets-app
+    profiles: [validation]
+    working_dir: /var/www/html
+    environment: *validation-env
+    volumes: [".:/var/www/html"]
+    depends_on:
+      web-validation: {condition: service_healthy}
+    command: ["php", "scripts/measure-performance.php"]
+  db-restore:
+    image: mysql:8.4@sha256:6ea90827b1100f8f2ae306a539f86d2c264a26ed435a2a9f75551dd5c3aeb242
+    profiles: [validation]
+    environment:
+      MYSQL_DATABASE: ins_tickets
+      MYSQL_USER: ins_app
+      MYSQL_PASSWORD: restore-application-only
+      MYSQL_ROOT_PASSWORD: restore-maintenance-only
+      MYSQL_ROOT_HOST: "%"
+      TZ: UTC
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_ai_ci", "--default-time-zone=+00:00"]
+    tmpfs: [/var/lib/mysql]
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_ROOT_PASSWORD\" mysql -u root ins_tickets -Nse 'SELECT 1' >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+  restore-check:
+    image: ins-tickets-app
+    profiles: [validation]
+    working_dir: /var/www/html
+    environment: &restore-env
+      APP_ENV: validation
+      APP_URL: http://localhost:8081
+      APP_KEY: cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+      DB_HOST: db-restore
+      DB_PORT: "3306"
+      DB_NAME: ins_tickets
+      DB_USER: ins_app
+      DB_PASSWORD: restore-application-only
+      VALIDATION_ROOT_PASSWORD: restore-maintenance-only
+    volumes: [".:/var/www/html"]
+    depends_on:
+      db-restore: {condition: service_healthy}
+  web-restored:
+    image: ins-tickets-app
+    profiles: [validation]
+    ports: ["127.0.0.1:8083:80"]
+    environment:
+      <<: *restore-env
+      APP_URL: http://localhost:8083
+    volumes: [".:/var/www/html"]
+    tmpfs:
+      - /var/www/html/storage/sessions:uid=33,gid=33,mode=0770
+      - /var/www/html/storage/logs:uid=33,gid=33,mode=0770
+    depends_on:
+      db-restore: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "php", "scripts/health.php"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 15s

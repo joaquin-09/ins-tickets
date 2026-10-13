@@ -120,6 +120,13 @@ final class TicketTest extends TestCase
         TicketRepository::filters($user,['estado' => 'reabierto']);
     }
 
+    public function testInvalidUtf8SearchIsRejectedBeforeQueryingDatabase(): void
+    {
+        $user = new User(1, 'Demo', 'demo@nexoti.test', 'usuario', true, '');
+        $this->expectException(ValidationException::class);
+        TicketRepository::filters($user, ['q' => "\xC3\x28"]);
+    }
+
     public function testLocalDatesAndCodes(): void
     {
         self::assertSame('12/10/2026 19:00',Dates::local('2026-10-13 01:00:00'));
